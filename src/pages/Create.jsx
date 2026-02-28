@@ -2,8 +2,11 @@ import { nanoid } from "nanoid";
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { RecipeDataContext } from "../context/RecipeContext";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Create = () => {
+  const navigate = useNavigate();
   const { data, setdata } = useContext(RecipeDataContext);
   const { register, handleSubmit, reset } = useForm();
 
@@ -11,7 +14,9 @@ const Create = () => {
     recipe.id = nanoid();
 
     setdata([...data, recipe]);
+    toast.success("New recipe created!");
     reset();
+    navigate("/recipes");
   };
 
   return (
@@ -40,19 +45,19 @@ const Create = () => {
 
       <textarea
         className="block border-b outline-0 p-2"
-        {...register("description")}
+        {...register("desc")}
         placeholder="Start from here"
       ></textarea>
 
       <textarea
         className="block border-b outline-0 p-2"
-        {...register("ingrediants ")}
+        {...register("ingr ")}
         placeholder="write ingrediants by comma saprated"
       ></textarea>
 
       <textarea
         className="block border-b outline-0 p-2"
-        {...register("instructions  ")}
+        {...register("inst  ")}
         placeholder="write instructions by comma saprated"
       ></textarea>
 

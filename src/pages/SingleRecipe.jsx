@@ -9,35 +9,36 @@ const SingleRecipe = () => {
   const navigate = useNavigate();
   const params = useParams();
   const recipe = data.find((recipe) => {
-    params.id == recipe.id;
+    return params.id == recipe.id;
   });
 
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit } = useForm({
     defaultValues: {
-      title: recipe.title,
-      chef: recipe.chef,
-      image: recipe.image,
-      inst: recipe.inst,
-      desc: recipe.desc,
-      ingr: recipe.ingr,
+      title: recipe?.title,
+      chef: recipe?.chef,
+      image: recipe?.image,
+      inst: recipe?.inst,
+      desc: recipe?.desc,
+      ingr: recipe?.ingr,
     },
   });
 
-  const SubmitHandler = (recipe) => {
-    const index = data.findIndex((recipe) => {
-      params.id == recipe.id;
-      const copydata = [...data];
-      copydata[index] = { ...copydata[index], ...recipe };
-      setdata(copydata);
-      toast.success("Recipe updated!");
-    });
+  const UpdateHandler = (formData) => {
+    const index = data.findIndex((r) => r.id == params.id);
+
+    const copydata = [...data];
+    copydata[index] = { ...copydata[index], ...formData };
+
+    setdata(copydata);
+    localStorage.setItem("recipes", JSON.stringify(copydata));
+    toast.success("Recipe updated!");
   };
 
   const DeleteHandler = () => {
-    const filterdata = data.filter((recipe) => {
-      recipe.id != params.id;
-    });
+    const filterdata = data.filter((r) => r.id != params.id);
+
     setdata(filterdata);
+    localStorage.setItem("recipes", JSON.stringify(filterdata));
     toast.success("Recipe deleted!");
     navigate("/recipes");
   };
@@ -45,12 +46,12 @@ const SingleRecipe = () => {
   return recipe ? (
     <div className="w-full flex">
       <div className="left w-1/2 p-2">
-        <h1 className="text-5xl">{recipe.title}</h1>
-        <img className="h-[20vh]" src={recipe.image} alt="" />
-        <h2>{recipe.chef}</h2>
-        <p>{recipe.desc}</p>
+        <h1 className="text-5xl">{recipe?.title}</h1>
+        <img className="h-[50vh]" src={recipe?.image} alt="" />
+        <h2>{recipe?.chef}</h2>
+        <p>{recipe?.desc}</p>
       </div>
-      <form className="right w-1/2 p-2" onSubmit={handleSubmit(SubmitHandler)}>
+      <form className="right w-1/2 p-2" onSubmit={handleSubmit(UpdateHandler)}>
         <input
           className="block border-b outline-0 p-2"
           {...register("image")}
@@ -95,10 +96,10 @@ const SingleRecipe = () => {
           className="block border-b outline-0 p-2"
           {...register("category")}
         >
-          <option value="cat-1">Category 1</option>
-          <option value="cat-2">Category 2</option>
-          <option value="cat-3">Category 3</option>
-          <option value="cat-4">Category 4</option>
+          <option value="cat-1">Breakfast</option>
+          <option value="cat-2">Lunch</option>
+          <option value="cat-3">Starter</option>
+          <option value="cat-4">Dinner</option>
         </select>
 
         <button className="block px-4 py-2 mt-5 bg-green-400  rounded cursor-pointer">

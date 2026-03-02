@@ -13,7 +13,11 @@ const Create = () => {
   const SubmitHandler = (recipe) => {
     recipe.id = nanoid();
 
-    setdata([...data, recipe]);
+    const copyData = [...data];
+    copyData.push(recipe);
+    setdata(copyData);
+    localStorage.setItem("recipes", JSON.stringify(copyData));
+
     toast.success("New recipe created!");
     reset();
     navigate("/recipes");
@@ -65,10 +69,10 @@ const Create = () => {
         className="block border-b outline-0 p-2"
         {...register("category")}
       >
-        <option value="cat-1">Category 1</option>
-        <option value="cat-2">Category 2</option>
-        <option value="cat-3">Category 3</option>
-        <option value="cat-4">Category 4</option>
+        <option value="cat-1">Breakfast</option>
+        <option value="cat-2">Lunch</option>
+        <option value="cat-3">Starter</option>
+        <option value="cat-4">Dinner</option>
       </select>
 
       <button className="block px-4 py-2 mt-5 bg-gray-900 rounded cursor-pointer">

@@ -4,6 +4,7 @@ import Recipes from "../pages/Recipes";
 import About from "../pages/About";
 import Create from "../pages/Create";
 import SingleRecipe from "../pages/SingleRecipe";
+import PageNotFound from "../pages/PageNotFound";
 
 const Mainroutes = () => {
   return (
@@ -13,6 +14,7 @@ const Mainroutes = () => {
       <Route path="/recipes/details/:id" element={<SingleRecipe />}></Route>
       <Route path="/create-recipe" element={<Create />}></Route>
       <Route path="/about" element={<About />}></Route>
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };
